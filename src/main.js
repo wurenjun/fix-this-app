@@ -1,5 +1,8 @@
-import App from "./app.js";
+import App from "./app";
 import "./style.css";
+import ReactDom from "react-dom";
+import React from "react";
+
 
 // const app = document.querySelector<HTMLDivElement>('#app')!
 
@@ -9,4 +12,6 @@ import "./style.css";
 // `
 
 const root = document.getElementById("app");
-new App(root);
+// new App(root);
+
+ReactDom.render( /*#__PURE__*/React.createElement(App, null), root);

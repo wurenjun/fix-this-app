@@ -3,6 +3,7 @@ export default class NotesView {
     root,
     { onNoteSelect, onNoteAdd, onNoteEdit, onNoteDelete } = {}
   ) {
+    this.activeNote = null;
     this.root = root;
     this.onNoteSelect = onNoteSelect;
     this.onNoteAdd = onNoteAdd;
@@ -16,25 +17,40 @@ export default class NotesView {
           <div class="notes__preview">
               <input class="notes__title" type="text" placeholder="新笔记...">
               <textarea class="notes__body">编辑笔记...</textarea>
+              <button id="save">Save</button>
+              <button id="delete">Delete</button>
           </div>
       `;
 
     const btnAddNote = this.root.querySelector(".notes__add");
     const inpTitle = this.root.querySelector(".notes__title");
     const inpBody = this.root.querySelector(".notes__body");
+    const saveButton = this.root.querySelector("#save");
+    const deleteButton = this.root.querySelector("#delete");
 
     btnAddNote.addEventListener("click", () => {
       this.onNoteAdd();
     });
 
-    [inpTitle, inpBody].forEach((inputField) => {
-      inputField.addEventListener("blur", () => {
+    saveButton.addEventListener('click', () => {
         const updatedTitle = inpTitle.value.trim();
         const updatedBody = inpBody.value.trim();
 
         this.onNoteEdit(updatedTitle, updatedBody);
-      });
     });
+
+    deleteButton.addEventListener('click', () => {
+      console.log(this.activeNote);
+      this.onNoteDelete(this.activeNote.id);
+    });
+    // [inpTitle, inpBody].forEach((inputField) => {
+    //   inputField.addEventListener("blur", () => {
+    //     const updatedTitle = inpTitle.value.trim();
+    //     const updatedBody = inpBody.value.trim();
+
+    //     this.onNoteEdit(updatedTitle, updatedBody);
+    //   });
+    // });
 
     this.updateNotePreviewVisibility(false);
   }
@@ -95,6 +111,7 @@ export default class NotesView {
   }
 
   updateActiveNote(note) {
+    this.activeNote = note;
     this.root.querySelector(".notes__title").value = note.title;
     this.root.querySelector(".notes__body").value = note.body;
 
